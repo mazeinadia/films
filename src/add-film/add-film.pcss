@@ -1,0 +1,39 @@
+@import '../assets/colors.pcss';
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
+
+:host {
+  color: $blue;
+  font-family: 'Playfair Display', serif;
+
+  > input, textarea {
+    display: block;
+    padding: 10px 15px;
+    margin: 20px 30px;
+    width: calc(90% - 40px);
+
+    &:focus {
+      border: none;
+      box-shadow: 0 0 10px rgba(65, 79, 71, 0.5);
+    }
+  }
+  > a{
+    display: block;
+    width: calc(90% - 40px);
+    margin: 20px 30px;
+    border: $pink 2px dotted;
+    border-radius: 5px;
+    background-color: $ivory;
+    box-shadow: inset 0 0 10px rgba(65, 79, 71, 0.5);
+    padding: 10px 15px;
+    color: $blue;
+    font-size: 18px;
+    font-family: 'Playfair Display', serif;
+    cursor: pointer;
+    text-align: center;
+
+    &:hover {
+      box-shadow: 0 0 10px rgba(65, 79, 71, 0.5);
+    }
+
+  }
+}

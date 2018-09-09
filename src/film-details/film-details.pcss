@@ -1,0 +1,32 @@
+@import '../assets/colors.pcss';
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
+
+:host {
+  color: $blue;
+  font-family: 'Playfair Display', serif;
+  >#film {
+    display: grid;
+    grid-template-areas: 'poster title'
+    'poster rating'
+    'poster description';
+    grid-gap: 20px 20px;
+    padding: 20px 30px;
+
+    >#poster {
+      grid-area: poster;
+    }
+
+    >#title {
+      grid-area: title;
+      font-size: 20px;
+    }
+
+    >#rating {
+      grid-area: rating;
+    }
+
+    >#description {
+      grid-area: description;
+    }
+  }
+}

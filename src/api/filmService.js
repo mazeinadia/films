@@ -1,23 +1,25 @@
+let currentId = 0;
+
+
 export default class FilmService {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
   }
 
-    getUrl({path = '', params = {}}) {
-        let queryString = Object.keys(params)
-            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
-            .join('&');
+  getUrl({ path = '', params = {} }) {
+    let queryString = Object.keys(params)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+      .join('&');
 
-        queryString = queryString ? '?' + queryString : '';
+    queryString = queryString ? `?${queryString}` : '';
 
-        return this.baseUrl + path + queryString;
-    }
+    return this.baseUrl + path + queryString;
+  }
 
-    request({path = '', params = {}, init = {}}) {
-        return fetch(this.getUrl({path: path, params: params}), init)
-            .then(response => response.json());
-    }
-
+  request({ path = '', params = {}, init = {} }) {
+    return fetch(this.getUrl({ path, params }), init)
+      .then(response => response.json());
+  }
 
 
   getFilms(page = 0, limit = 10) {
@@ -29,16 +31,42 @@ export default class FilmService {
   }
 
   deleteFilm(id) {
-    // POST
-      return true;
+    return fetch(`${this.baseUrl}/films/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 
-  addFilm(data) {
-      // POST
-      return true;
+  getId() {
+    currentId++;
+    return currentId;
+  }
+
+  addFilm(filmData) {
+    const data = {
+      filmData,
+      'cover_url': null
+    };
+
+    return fetch(`${this.baseUrl}/films/${this.getId()}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 
   updateFilm(id, data) {
-      return this.deleteFilm(id).then(() => this.addFilm(data));
+
+    return fetch(`${this.baseUrl}/films/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 }

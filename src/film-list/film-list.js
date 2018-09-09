@@ -45,8 +45,7 @@ export default class FilmList extends Component {
     FilmList.templateService.appendTemplateContentToRoot('film-list-template', root);
     this.records = 10;
     this.currentPage = 1;
-    this.addShadowEventListener('fl-film', 'selectFilm', this.select);
-    this.addShadowEventListener('button', 'click', this.updateList);
+   this.addShadowEventListener('button', 'click', this.updateList);
     this.addShadowEventListener('fl-film', 'deleteFilm', this.deleteFilm);
     this.addShadowEventListener('#add', 'addFilm', this.openAddForm);
   }
@@ -56,9 +55,6 @@ export default class FilmList extends Component {
     this.renderList();
   }
 
-  select() {
-    //this.dispatchEvent(new Event('selectFilm', { bubbles: true, composed: true }));
-  }
 
   deleteFilm(event) {
     const filmId = event.target.closest('fl-film').id;
@@ -82,7 +78,9 @@ export default class FilmList extends Component {
 
       film.title = filmData.title;
       film.id = filmData.id;
+      film.$('#title').href = `/films/${filmData.id}`;
       film.rating = filmData.rating;
+      film.$('#change').href = `/films/change/${filmData.id}`;
       this.list.appendChild(film);
   }
 
