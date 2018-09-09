@@ -1,2 +1,2 @@
-worker: npm run build && npm run json
+worker: npm run json
 web: npm run start
