@@ -24,28 +24,33 @@ import TemplateService from './templateService';
 
 import FilmService from './api/filmService';
 
-const templateService = new TemplateService('templates');
-const filmService = new FilmService('http://127.0.0.1:3000');
+export default function createElements() {
 
-templateService.addTemplateToDocument('rating-template', ratingTemplate, ratingStyle);
-Rating.templateService = templateService;
-customElements.define('fl-rating', Rating);
+    const templateService = new TemplateService('templates');
+    const filmService = new FilmService('http://127.0.0.1:3000');
 
-templateService.addTemplateToDocument('film-template', filmTemplate, filmStyle);
-Film.templateService = templateService;
-customElements.define('fl-film', Film);
+    templateService.addTemplateToDocument('rating-template', ratingTemplate, ratingStyle);
+    Rating.templateService = templateService;
+    customElements.define('fl-rating', Rating);
 
-templateService.addTemplateToDocument('film-list-template', filmListTemplate, filmListStyle);
-FilmList.templateService = templateService;
-FilmList.filmService = filmService;
-customElements.define('fl-film-list', FilmList);
+    templateService.addTemplateToDocument('film-template', filmTemplate, filmStyle);
+    Film.templateService = templateService;
+    customElements.define('fl-film', Film);
 
-templateService.addTemplateToDocument('film-details-template', filmDetailsTemplate, filmDetailsStyle);
-FilmDetails.templateService = templateService;
-FilmDetails.filmService = filmService;
-customElements.define('fl-film-details', FilmDetails);
+    templateService.addTemplateToDocument('film-list-template', filmListTemplate, filmListStyle);
+    FilmList.templateService = templateService;
+    FilmList.filmService = filmService;
+    customElements.define('fl-film-list', FilmList);
 
-templateService.addTemplateToDocument('add-film-template', addFilmTemplate, addFilmStyle);
-AddFilm.templateService = templateService;
-AddFilm.filmService = filmService;
-customElements.define('fl-add-film', AddFilm);
+    templateService.addTemplateToDocument('film-details-template', filmDetailsTemplate, filmDetailsStyle);
+    FilmDetails.templateService = templateService;
+    FilmDetails.filmService = filmService;
+    customElements.define('fl-film-details', FilmDetails);
+
+    templateService.addTemplateToDocument('add-film-template', addFilmTemplate, addFilmStyle);
+    AddFilm.templateService = templateService;
+    AddFilm.filmService = filmService;
+    customElements.define('fl-add-film', AddFilm);
+}
+
+createElements();

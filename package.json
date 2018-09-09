@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --mode=development --inline --progress --hot --config webpack/development.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers js:babel-core/register",
     "build": "webpack --mode=production --inline --progress --config webpack/base.js",
     "json": " json-server --watch src/api/films.json",
     "express-prebuild": "webpack --mode=production --inline --progress --config webpack/prebuild.js",
@@ -15,8 +15,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^2.1.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2017": "^6.24.1",
     "chai": "^4.1.2",
@@ -48,5 +50,8 @@
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^3.0.0",
     "ultimate-pagination": "^1.0.0"
+  },
+  "globals": {
+    "window": {}
   }
 }
