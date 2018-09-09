@@ -14,11 +14,7 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - hold:
-          type: approval
       - deploy:
           filters:
             branches:
               only: master
-          requires:
-            - hold

@@ -27,7 +27,7 @@ import FilmService from './api/filmService';
 export default function createElements() {
 
     const templateService = new TemplateService('templates');
-    const filmService = new FilmService('http://127.0.0.1:3000');
+    const filmService = new FilmService('https://xsolla-films-server.herokuapp.com/');
 
     templateService.addTemplateToDocument('rating-template', ratingTemplate, ratingStyle);
     Rating.templateService = templateService;
