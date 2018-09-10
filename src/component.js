@@ -48,24 +48,20 @@ export default class Component extends HTMLElement {
     root.addEventListener(eventListener.type, eventListener.handler);
   }
 
-  _removeEventListeners(isShadowRoot) {
-    const root = isShadowRoot ? this.shadowRoot : this;
-
-    this.eventListeners
-      .filter(eventListener => eventListener.isShadowRoot === isShadowRoot)
-      .map(eventListener => root.removeEventListener(eventListener.type, eventListener.handler));
-  }
-
   addShadowEventListener(query, eventType, callback) {
     this._addEventListener(query, eventType, callback, true);
   }
 
-    addLightEventListener(query, eventType, callback) {
-        this._addEventListener(query, eventType, callback, false);
-    }
+  static addTemplateToDocument(id, content, style) {
+    const template = document.createElement('template');
+    template.id = id;
+    template.innerHTML = (style ? `<style>${style}</style>` : '') + content;
+    document.getElementById('templates').appendChild(template);
+  }
 
-  removeShadowEventListeners() {
-    this._removeEventListeners(true);
+  appendTemplateContentToRoot(templateId, root) {
+    const template = document.getElementById(templateId);
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   bindPropertiesToElements(names) {

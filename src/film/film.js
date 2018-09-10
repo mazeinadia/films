@@ -1,20 +1,15 @@
 import Component from '../component';
-
-const dependencies = {};
+import filmTemplate from './film.html';
+import filmStyle from './film.pcss';
 
 export default class Film extends Component {
-  static get templateService() {
-    return dependencies.templateService;
-  }
-
-  static set templateService(dependency) {
-    dependencies.templateService = dependency;
-  }
-
   constructor() {
     super();
-    const root = this.attachShadow({ mode: 'open' });
-    Film.templateService.appendTemplateContentToRoot('film-template', root);
+
+    this.attachShadow({ mode: 'open' });
+    Component.addTemplateToDocument('film-template', filmTemplate, filmStyle);
+    this.appendTemplateContentToRoot('film-template');
+
     this.addShadowEventListener('i', 'click', this.del);
     this.addShadowEventListener('data-bind-title', 'click', this.select);
 
@@ -25,10 +20,10 @@ export default class Film extends Component {
   }
 
   del() {
-    this.dispatchEvent(new Event('deleteFilm', {bubbles: true, composed: true}));
+    this.dispatchEvent(new Event('deleteFilm', { bubbles: true, composed: true }));
   }
 
   select() {
-      this.dispatchEvent(new Event('selectFilm', {bubbles: true, composed: true}));
+    this.dispatchEvent(new Event('selectFilm', { bubbles: true, composed: true }));
   }
 }

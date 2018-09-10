@@ -1,33 +1,15 @@
-let currentId = 0;
-
-
 export default class FilmService {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
   }
 
-  getUrl({ path = '', params = {} }) {
-    let queryString = Object.keys(params)
-      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-      .join('&');
-
-    queryString = queryString ? `?${queryString}` : '';
-
-    return this.baseUrl + path + queryString;
-  }
-
-  request({ path = '', params = {}, init = {} }) {
-    return fetch(this.getUrl({ path, params }), init)
+  getFilms(page = 0, limit = 10) {
+    return fetch(`${this.baseUrl}/films?_sort=id&_order=desc&_page=${page}&_limit=${limit}`)
       .then(response => response.json());
   }
 
-
-  getFilms(page = 0, limit = 10) {
-    return this.request({ path: '/films', params: { _page: page, _limit: limit } });
-  }
-
   getFilm(id) {
-    return this.request({ path: `/films/${id}` });
+    return fetch(`${this.baseUrl}/films/${id}`).then(response => response.json());
   }
 
   deleteFilm(id) {
@@ -40,18 +22,22 @@ export default class FilmService {
   }
 
   getId() {
-    currentId++;
-    return currentId;
+    return fetch(`${this.baseUrl}/films?_sort=id&_order=desc&_limit=1`)
+      .then(response => response[0].id);
   }
 
   addFilm(filmData) {
+    const nextID = isNaN(parseInt(this.getId())) ? parseInt(this.getId()) - 1 : 1000;
     const data = {
-      filmData,
-      'cover_url': null
+      'title': filmData.title,
+      'rating': filmData.rating,
+      'description': filmData.description,
+      'cover_url': null,
+      'id': nextID
     };
 
-    return fetch(`${this.baseUrl}/films/${this.getId()}`, {
-      method: 'PUT',
+    return fetch(`${this.baseUrl}/films`, {
+      method: 'POST',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',

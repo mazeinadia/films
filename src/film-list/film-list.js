@@ -1,16 +1,10 @@
 import Component from '../component';
+import filmListTemplate from './film-list.html';
+import filmListStyle from './film-list.pcss';
 
 const dependencies = {};
 
 export default class FilmList extends Component {
-  static get templateService() {
-    return dependencies.templateService;
-  }
-
-  static set templateService(dependency) {
-    dependencies.templateService = dependency;
-  }
-
   static get filmService() {
     return dependencies.filmService;
   }
@@ -35,19 +29,18 @@ export default class FilmList extends Component {
     value ? this.setAttribute('current-page', value) : this.removeAttribute('current-page');
   }
 
-  get offset() {
-    return (this.currentPage - 1) * this.records;
-  }
-
   constructor() {
     super();
-    const root = this.attachShadow({ mode: 'open' });
-    FilmList.templateService.appendTemplateContentToRoot('film-list-template', root);
+
+    this.attachShadow({ mode: 'open' });
+    Component.addTemplateToDocument('film-list-template', filmListTemplate, filmListStyle);
+    this.appendTemplateContentToRoot('film-list-template');
+
     this.records = 10;
     this.currentPage = 1;
-   this.addShadowEventListener('button', 'click', this.updateList);
+
+    this.addShadowEventListener('button', 'click', this.updateList);
     this.addShadowEventListener('fl-film', 'deleteFilm', this.deleteFilm);
-    this.addShadowEventListener('#add', 'addFilm', this.openAddForm);
   }
 
   connectedCallback() {
@@ -68,20 +61,17 @@ export default class FilmList extends Component {
     }
   }
 
-  openAddForm() {
-    return true;
-  }
-
   addFilm(filmData) {
-      const Film = customElements.get('fl-film');
-      const film = new Film();
+    const Film = customElements.get('fl-film');
+    const film = new Film();
 
-      film.title = filmData.title;
-      film.id = filmData.id;
-      film.$('#title').href = `/films/${filmData.id}`;
-      film.rating = filmData.rating;
-      film.$('#change').href = `/films/change/${filmData.id}`;
-      this.list.appendChild(film);
+    film.title = filmData.title;
+    film.id = filmData.id;
+    film.$('#title').href = `/films/${filmData.id}`;
+    film.rating = filmData.rating;
+    film.$('#change').href = `/films/change/${filmData.id}`;
+
+    this.list.appendChild(film);
   }
 
   updateList() {

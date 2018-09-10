@@ -1,20 +1,13 @@
 import Component from '../component';
+import ratingTemplate from './rating.html';
+import ratingStyle from './rating.pcss';
 
-let dependencies = {};
+export default class Rating extends Component {
+  constructor() {
+    super();
 
-export class Rating extends Component {
-
-    static get templateService() {
-        return dependencies.templateService;
-    }
-
-    static set templateService(dependency) {
-        dependencies.templateService = dependency;
-    }
-
-    constructor() {
-        super();
-        const root = this.attachShadow({mode: 'open'});
-        Rating.templateService.appendTemplateContentToRoot('rating-template', root);
-    }
+    this.attachShadow({ mode: 'open' });
+    Component.addTemplateToDocument('rating-template', ratingTemplate, ratingStyle);
+    this.appendTemplateContentToRoot('rating-template');
+  }
 }

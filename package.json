@@ -8,7 +8,6 @@
     "test": "mocha --compilers js:babel-core/register",
     "build": "webpack --mode=production --inline --progress --config webpack/base.js",
     "json": " json-server --watch src/api/films.json",
-    "express-prebuild": "webpack --mode=production --inline --progress --config webpack/prebuild.js",
     "heroku-postbuild": "webpack --mode=production --inline --progress --config webpack/base.js",
     "start": "node server.js"
   },

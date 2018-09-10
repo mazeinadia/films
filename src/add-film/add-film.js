@@ -1,29 +1,26 @@
 import Component from '../component';
+import addFilmTemplate from './add-film.html';
+import addFilmStyle from './add-film.pcss';
 
 const dependencies = {};
 
 export default class AddFilm extends Component {
-  static get templateService() {
-    return dependencies.templateService;
+  static get filmService() {
+    return dependencies.filmService;
   }
 
-  static set templateService(dependency) {
-    dependencies.templateService = dependency;
+  static set filmService(dependency) {
+    dependencies.filmService = dependency;
   }
-
-    static get filmService() {
-        return dependencies.filmService;
-    }
-
-    static set filmService(dependency) {
-        dependencies.filmService = dependency;
-    }
 
   constructor() {
     super();
-    const root = this.attachShadow({ mode: 'open' });
-    AddFilm.templateService.appendTemplateContentToRoot('add-film-template', root);
-    this.addShadowEventListener('a', 'click', this.save);
+
+    this.attachShadow({ mode: 'open' });
+    Component.addTemplateToDocument('add-film-template', addFilmTemplate, addFilmStyle);
+    this.appendTemplateContentToRoot('add-film-template');
+
+    this.addShadowEventListener('#save', 'click', this.save);
 
     this.bindPropertiesToAttributes(['id', 'updating']);
   }
@@ -31,6 +28,7 @@ export default class AddFilm extends Component {
   connectedCallback() {
     if (this.id !== 'null') {
       this.updating = true;
+
       AddFilm.filmService.getFilm(this.id).then(
         (response) => {
           this.$('#title').value = response.title,
@@ -49,5 +47,6 @@ export default class AddFilm extends Component {
     };
     this.updating ? AddFilm.filmService.updateFilm(this.id, filmData)
       : AddFilm.filmService.addFilm(filmData);
+    window.location = '/films';
   }
 }
