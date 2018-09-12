@@ -21,7 +21,6 @@ export default class AddFilm extends Component {
     this.appendTemplateContentToRoot('add-film-template');
 
     this.addShadowEventListener('#save', 'click', this.save);
-    this.addShadowEventListener('#rating', 'change', this.checkRating);
 
     this.bindPropertiesToAttributes(['id', 'updating']);
   }
@@ -54,7 +53,6 @@ export default class AddFilm extends Component {
   }
 
   save() {
-    this.checkRating();
     const filmData = {
       title: this.$('#title').value,
       description: this.$('#description').value,
