@@ -42,13 +42,19 @@ export default class AddFilm extends Component {
 
   checkRating(event) {
     const tryToPrint = event.target.value;
-    const newVal = isNaN(parseFloat(tryToPrint)) ? '0'
-      : tryToPrint > 10 ? '10'
-        : tryToPrint < 0 ? 0 : parseFloat(tryToPrint);
-    event.target.value = newVal;
+    let newVal;
+    if (isNaN(parseFloat(tryToPrint)) || parseFloat(tryToPrint) < 0) {
+      newVal = 0;
+    } else if ((parseFloat(tryToPrint)) > 10) {
+      newVal = 10;
+    } else {
+      newVal = parseFloat(tryToPrint);
+    }
+    this.$('#rating').value = newVal;
   }
 
   save() {
+    this.checkRating();
     const filmData = {
       title: this.$('#title').value,
       description: this.$('#description').value,
