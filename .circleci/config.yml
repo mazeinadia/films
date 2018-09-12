@@ -1,4 +1,5 @@
 vertion: 2
+
 jobs:
   deploy:
     docker:
@@ -9,12 +10,42 @@ jobs:
           name: Deploy Master to Heroku
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+  build:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache: # special step to restore the dependency cache
+        key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+        name: Setup Dependencies
+        command: npm install
+      - save_cache: # special step to save the dependency cache
+        key: dependency-cache-{{ checksum "package-lock.json" }}
+        paths:
+          - ./node_modules
+  test:
+    docker:
+      - image: circleci/node:8
+      steps:
+        - checkout
+        - run:
+        name: Testing code sintax with ESLint
+        command: |
+          nmp run lint
 
 workflows:
   version: 2
   deploy:
     jobs:
+      - build:
+        branches:
+          only: master
+      - test:
+        branches:
+          only: master
+        requires:
+          - build
       - deploy:
-          filters:
-            branches:
-              only: master
+          branches:
+             only: master

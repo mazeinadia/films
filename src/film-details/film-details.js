@@ -25,7 +25,7 @@ export default class FilmDetail extends Component {
       'title',
       'rating',
       'description',
-      'poster'
+      'poster',
     ]);
   }
 
@@ -35,8 +35,8 @@ export default class FilmDetail extends Component {
       'title',
       'rating',
       'poster',
-      'descriprion'
-    ]
+      'descriprion',
+    ];
   }
 
   connectedCallback() {
@@ -50,7 +50,7 @@ export default class FilmDetail extends Component {
       this.$('#rating').append(response.rating);
       const poster = document.createElement('img');
       poster.src = response.cover_url === null
-        ? "https://res.cloudinary.com/dcnr71p42/image/upload/v1536490419/star.png"
+        ? 'https://res.cloudinary.com/dcnr71p42/image/upload/v1536490419/star.png'
         : response.cover_url;
       this.$('#poster').append(poster);
     });

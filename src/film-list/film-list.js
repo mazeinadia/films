@@ -89,9 +89,7 @@ export default class FilmList extends Component {
     this.$('button').disabled = true;
 
     FilmList.filmService.getFilms(this.currentPage, this.records).then((response) => {
-      response.map((filmData) => {
-        this.addFilm(filmData);
-      });
+      response.map(filmData => this.addFilm(filmData));
 
       if (response.length < 1) {
         this.$('button').style.display = 'none';

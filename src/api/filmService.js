@@ -23,30 +23,29 @@ export default class FilmService {
 
   getId() {
     return fetch(`${this.baseUrl}/films?_sort=id&_order=desc&_limit=1`)
-      .then(response => response[0].id);
+      .then(response => response.json())
+      .then(body => body[0].id);
   }
 
   addFilm(filmData) {
-    const nextID = isNaN(parseInt(this.getId())) ? parseInt(this.getId()) - 1 : 1000;
-    const data = {
-      'title': filmData.title,
-      'rating': filmData.rating,
-      'description': filmData.description,
-      'cover_url': null,
-      'id': nextID
-    };
-
-    return fetch(`${this.baseUrl}/films`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    return this.getId().then(id => id + 1)
+      .then(nextId => ({
+        title: filmData.title,
+        rating: filmData.rating,
+        description: filmData.description,
+        cover_url: null,
+        id: nextId,
+      }))
+      .then(data => fetch(`${this.baseUrl}/films`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }));
   }
 
   updateFilm(id, data) {
-
     return fetch(`${this.baseUrl}/films/${id}`, {
       method: 'PATCH',
       body: JSON.stringify(data),

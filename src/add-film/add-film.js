@@ -21,6 +21,7 @@ export default class AddFilm extends Component {
     this.appendTemplateContentToRoot('add-film-template');
 
     this.addShadowEventListener('#save', 'click', this.save);
+    this.addShadowEventListener('#rating', 'change', this.checkRating);
 
     this.bindPropertiesToAttributes(['id', 'updating']);
   }
@@ -39,14 +40,21 @@ export default class AddFilm extends Component {
     }
   }
 
+  checkRating(event) {
+    const tryToPrint = event.target.value;
+    const newVal = isNaN(parseFloat(tryToPrint)) ? '0'
+      : tryToPrint > 10 ? '10'
+        : tryToPrint < 0 ? 0 : parseFloat(tryToPrint);
+    event.target.value = newVal;
+  }
+
   save() {
     const filmData = {
-      'title': this.$('#title').value,
-      'description': this.$('#description').value,
-      'rating': this.$('#rating').value,
+      title: this.$('#title').value,
+      description: this.$('#description').value,
+      rating: this.$('#rating').value,
     };
-    this.updating ? AddFilm.filmService.updateFilm(this.id, filmData)
-      : AddFilm.filmService.addFilm(filmData);
-    window.location = '/films';
+    this.updating ? AddFilm.filmService.updateFilm(this.id, filmData).then(() => window.location.href = '/films')
+      : AddFilm.filmService.addFilm(filmData).then(() => window.location.href = '/films');
   }
 }

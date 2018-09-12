@@ -17,10 +17,6 @@ export default class Component extends HTMLElement {
     return this.shadowRoot.querySelectorAll(selector);
   }
 
-  get is() {
-    return this.localName;
-  }
-
   _addEventListener(query, eventType, callback, isShadowRoot) {
     const root = isShadowRoot ? this.shadowRoot : this;
 
@@ -59,18 +55,18 @@ export default class Component extends HTMLElement {
     document.getElementById('templates').appendChild(template);
   }
 
-  appendTemplateContentToRoot(templateId, root) {
+  appendTemplateContentToRoot(templateId) {
     const template = document.getElementById(templateId);
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   bindPropertiesToElements(names) {
-    names.map((name) => {
+    names.map(name => {
       const selector = `[data-bind-${Component.convertCamelCaseToKebab(name)}]`;
 
-      Object.defineProperty(this, name, {
+      return Object.defineProperty(this, name, {
         get: () => this.boundPropertiesToElements[name],
-        set: (value) => {
+        set: value => {
           this.boundPropertiesToElements[name] = value;
           const elements = Array.from(this.shadowRoot.querySelectorAll(selector));
           elements.map(element => element.innerText = value);
@@ -80,10 +76,10 @@ export default class Component extends HTMLElement {
   }
 
   bindPropertiesToAttributes(names) {
-    names.map((name) => {
+    names.map(name => {
       const attributeName = Component.convertCamelCaseToKebab(name);
 
-      Object.defineProperty(this, name, {
+      return Object.defineProperty(this, name, {
         get: () => {
           const value = this.getAttribute(attributeName);
           return value === String(Number(value)) ? +value : value;
